@@ -21,7 +21,7 @@ namespace NLKARExperience.Systems
 
         private void handlePlacementPose(Pose pose)
         {
-            Logger.LogMessage(LogSeverityLevel.Info, $"in {nameof(PrefabPlacementSystem)}");
+            Logger.LogMessage(LogSeverityLevel.Info, $"in {nameof(PrefabPlacementSystem)} test");
         }
     }
 }
