@@ -5,5 +5,6 @@ namespace NLKARExperience.Core.EventSystem.Events.App
     public class AppEvents
     {
         public readonly DebugEvents Debug = new DebugEvents();
+        public readonly AREvents AR = new AREvents();
     }
 }
