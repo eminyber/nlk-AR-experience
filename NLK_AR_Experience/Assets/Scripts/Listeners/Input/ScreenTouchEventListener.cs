@@ -23,14 +23,15 @@ namespace NLKARExperience.Listeners
         /// <summary>
         /// Cached reference to the user input handler found on this GameObject.
         /// </summary>
-        private IUserInputHandler _userInputHandler;
+        [SerializeField] IUserInputHandler _userInputHandler;
 
         /// <summary>
         /// Caches the input handler and subscribes to the Enhanced Touch event.
         /// </summary>
         void OnEnable()
         {
-            _userInputHandler = GetComponent<IUserInputHandler>();
+            if (_userInputHandler == null)
+                _userInputHandler = GetComponent<IUserInputHandler>();
 
             EnhancedTouch.EnhancedTouchSupport.Enable();
             EnhancedTouch.Touch.onFingerDown += handleOnFingerDown;

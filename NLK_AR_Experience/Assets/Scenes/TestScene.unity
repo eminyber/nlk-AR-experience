@@ -1408,8 +1408,6 @@ GameObject:
   - component: {fileID: 2033293149}
   - component: {fileID: 2033293148}
   - component: {fileID: 2033293147}
-  - component: {fileID: 2033293154}
-  - component: {fileID: 2033293153}
   - component: {fileID: 2033293152}
   m_Layer: 0
   m_Name: XR Origin (Mobile AR)
@@ -1498,34 +1496,6 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2033293152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2033293146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c488e0d441417da4fbfad6ad855a8dc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.UI.Util.UIElementDetector
-  _graphicRaycaster: {fileID: 462535724}
-  _eventSystem: {fileID: 1077746731}
---- !u!114 &2033293153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2033293146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54ea3a5892848504daa6d1381547716d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.Handlers.ARPlaneTouchToPoseHandler
-  _arRaycastManager: {fileID: 2033293147}
-  _UIElementDetector: {fileID: 2033293152}
---- !u!114 &2033293154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

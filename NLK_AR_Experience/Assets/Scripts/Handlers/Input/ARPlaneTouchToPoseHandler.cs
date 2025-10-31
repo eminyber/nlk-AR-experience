@@ -1,7 +1,7 @@
 using NLKARExperience.Core.EventSystem;
 using NLKARExperience.Core.Interfaces.Handlers;
-using NLKARExperience.UI.Util;
 using NLKARExperience.Util.Enums;
+
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -17,10 +17,9 @@ namespace NLKARExperience.Handlers
     /// </summary>
     /// <remarks>
     /// This handler uses <see cref="ARRaycastManager"/> to perform raycasts agains AR planes and triggers
-    /// an event when a plane is hit. It also utilizes <see cref="UIElementDetector"/> to ensure that the 
-    /// touch did not occur on a UI element.
+    /// an event when a plane is hit. 
     /// </remarks>
-    /// <para>It requires an <see cref="ARRaycastManager"/> and an <see cref="UIElementDetector"/> within the scene.</para>
+    /// <para>It requires an <see cref="ARRaycastManager"/> to exist within the scene.</para>
     public class ARPlaneTouchToPoseHandler : MonoBehaviour, IUserInputHandler
     {
         /// <summary>
@@ -30,55 +29,42 @@ namespace NLKARExperience.Handlers
 
 
         /// <summary>
-        /// Cached reference to the <see cref="UIElementDetector"/> within the scene for detecting if a touch occurred over
-        /// a UI element.
-        /// </summary>
-        [SerializeField] UIElementDetector _UIElementDetector;
-
-        /// <summary>
         /// Internal list used to store raycast hit results. 
         /// </summary>
         private List<ARRaycastHit> _raycastHits = new List<ARRaycastHit>();
 
         /// <summary>
-        /// Validates that the <see cref="ARRaycastManager"/> and <see cref="UIElementDetector"/> exists.
+        /// Validates that the <see cref="ARRaycastManager"/> exists.
         /// </summary>
         /// <remarks>
-        /// If one is missing, this component will log an error and disable itself to prevent null reference
+        /// If it is missing, this component will log an error and disable itself to prevent null reference
         /// exceptions. 
         /// </remarks>
         void Start()
         {
-            if (_arRaycastManager == null)
-            {
-                Logger.LogMessage(LogSeverityLevel.Error, $"Missing ARRaycastManager reference in {nameof(ARPlaneTouchToPoseHandler)}.");
-                enabled = false;
-                return;
-            }
+            if (_arRaycastManager != null) return;
 
-            if (_UIElementDetector == null) 
-            {
-                Logger.LogMessage(LogSeverityLevel.Error, $"Missing UIElementDetector reference in {nameof(ARPlaneTouchToPoseHandler)}.");
-                enabled = false;
-                return;
-            }
+            Logger.LogMessage(LogSeverityLevel.Error, $"Missing ARRaycastManager reference in {nameof(ARPlaneTouchToPoseHandler)}.");
+            enabled = false;
+            return;
         }
 
         /// <summary>
         /// Checks if an AR plane exists at the user's touch position
         /// </summary>
         /// <param name="screenTouchPosition">The position of the user's touch</param>
-        public void HandleUserTouchedScreen(Vector2 screenTouchPosition)
+        public bool HandleUserTouchedScreen(Vector2 screenTouchPosition)
         {
-            if (!enabled) return;
-
-            if (_UIElementDetector.IsUIElementAtPosition(screenTouchPosition)) return;
+            if (!enabled) return false;
 
             if (_arRaycastManager.Raycast(screenTouchPosition, _raycastHits, TrackableType.PlaneWithinPolygon))
             {
                 ARRaycastHit firstARPlaneHit = _raycastHits[0];
                 EventManager.InputEvent.Touch.OnPlacementPoseSelected.RaiseEvent(firstARPlaneHit.pose);
+                return true;
             }
+
+            return false;
         }
     }
 }
