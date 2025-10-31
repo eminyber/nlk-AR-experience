@@ -467,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c551e2b2b6e4340478a9d40e03d5e302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.Systems.PrefabPlacementSystem
-  _gameObjectPrefab: {fileID: 1710811882774141176, guid: e0e6840392613e84eaa0aba2e5d57161, type: 3}
+  _gameObjectPrefab: {fileID: 6830014354443782298, guid: edc743a7214a2054b894d1e412eab91f, type: 3}
 --- !u!1 &462535722
 GameObject:
   m_ObjectHideFlags: 0
