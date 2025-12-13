@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace NLKARExperience.Core.Interfaces.Handlers
+namespace NLKARExperience.Core.Interfaces.Handlers.Input
 {
     public interface IUserInputHandler
     {
-        public bool HandleUserTouchedScreen(Vector2 touchPosition);
+        public bool ProcessInput(Vector2 touchPosition);
     }
 }
