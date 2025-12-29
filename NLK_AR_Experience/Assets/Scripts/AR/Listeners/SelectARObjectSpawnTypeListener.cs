@@ -1,5 +1,5 @@
 using NLKARExperience.Core.EventBus;
-using NLKARExperience.Core.EventBus.EventData.Input;
+using NLKARExperience.Core.EventBus.EventData.AR;
 using NLKARExperience.Core.Interfaces.Handlers;
 using NLKARExperience.Core.Interfaces.Listeners;
 using NLKARExperience.Core.Models;
@@ -11,15 +11,15 @@ using Logger = NLKARExperience.Core.Utils.Logger;
 
 namespace NLKARExperience.AR.Listeners
 {
-    public class ARPlaneTappedListener : MonoBehaviour, IEventListener<ARPlaneTappedEventData>
+    public class SelectARObjectSpawnTypeListener : MonoBehaviour, IEventListener<SelectSpawnTypeRequestEventData>
     {
         [SerializeField] MonoBehaviour eventHandlerReference;
 
-        private IEventHandler<ARPlaneTappedEventData> _eventHandler;
+        private IEventHandler<SelectSpawnTypeRequestEventData> _eventHandler;
 
         void OnEnable()
         {
-            EventBus.Register<ARPlaneTappedEventData>(this);
+            EventBus.Register<SelectSpawnTypeRequestEventData>(this);
         }
 
         void Start()
@@ -33,20 +33,20 @@ namespace NLKARExperience.AR.Listeners
 
         void OnDisable()
         {
-            EventBus.Unregister<ARPlaneTappedEventData>(this);
+            EventBus.Unregister<SelectSpawnTypeRequestEventData>(this);
         }
 
-        public void OnEvent(ARPlaneTappedEventData eventData)
+        public void OnEvent(SelectSpawnTypeRequestEventData eventData)
         {
             _eventHandler.HandleEvent(eventData);
         }
 
         private bool ValidateScriptDependencies()
         {
-            if (!ValidateMonoDependencyUtils.ValidateDependency<IEventHandler<ARPlaneTappedEventData>>(eventHandlerReference, out _eventHandler))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<IEventHandler<SelectSpawnTypeRequestEventData>>(eventHandlerReference, out _eventHandler))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(eventHandlerReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'IEventHandler<ARPlaneTappedEventData>' in {nameof(ARPlaneTappedListener)}");
+                                                   $"of type 'IEventHandler<ARObjectToSpawnChangeRequestedEventData>' in {nameof(SelectARObjectSpawnTypeListener)}");
                 return false;
             }
 

@@ -1,5 +1,6 @@
 using NLKARExperience.Core.Interfaces.Handlers.Input;
 using NLKARExperience.Core.Models;
+using NLKARExperience.Core.Utils;
 
 using UnityEngine;
 
@@ -16,24 +17,15 @@ namespace NLKARExperience.Input.Listeners
 
         void Start()
         {
-            if (UserInputHandlerReference == null)
+            bool validationSucceeded = ValidateScriptDependencies();
+            if (!validationSucceeded)
             {
-                Logger.Log(LogSeverityLevel.Error, $"Missing IUserInputHandler reference in {nameof(UserScreenInputListener)}");
-                enabled = false;
-                return;
-            }
-
-            if (UserInputHandlerReference is not IUserInputHandler)
-            {
-                Logger.Log(LogSeverityLevel.Error, $"The cached MonoBehvaiour reference is not of type IUserInputHandler in {nameof(UserScreenInputListener)}");
                 enabled = false;
                 return;
             }
 
             EnhancedTouch.EnhancedTouchSupport.Enable();
-            EnhancedTouch.Touch.onFingerDown += handleOnFingerDown;
-
-            _userInputHandler = (IUserInputHandler)UserInputHandlerReference;
+            EnhancedTouch.Touch.onFingerDown += HandleOnFingerDown;
         }
 
         void OnDisable()
@@ -41,14 +33,26 @@ namespace NLKARExperience.Input.Listeners
             if (!EnhancedTouch.EnhancedTouchSupport.enabled) return;
 
             EnhancedTouch.EnhancedTouchSupport.Disable();
-            EnhancedTouch.Touch.onFingerDown -= handleOnFingerDown;
+            EnhancedTouch.Touch.onFingerDown -= HandleOnFingerDown;
         }
 
-        private void handleOnFingerDown(EnhancedTouch.Finger finger)
+        private void HandleOnFingerDown(EnhancedTouch.Finger finger)
         {
             if (finger.index != 0) return;
 
             _userInputHandler.ProcessInput(finger.screenPosition);
+        }
+
+        private bool ValidateScriptDependencies()
+        {
+            if (!ValidateMonoDependencyUtils.ValidateDependency<IUserInputHandler>(UserInputHandlerReference, out _userInputHandler))
+            {
+                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(UserInputHandlerReference)}' does not implement or contain required dependency " +
+                                                   $"of type 'IUserInputHandler' in {nameof(UserScreenInputListener)}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

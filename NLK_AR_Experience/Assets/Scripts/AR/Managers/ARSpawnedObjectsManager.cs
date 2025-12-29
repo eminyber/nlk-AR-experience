@@ -6,26 +6,26 @@ using UnityEngine;
 
 namespace NLKARExperience.AR.Managers
 {
-    public class ARSpawnedObjects : MonoBehaviour, ISpawnedObjectsManager<GameObject>
+    public class ARSpawnedObjectsManager : MonoBehaviour, ISpawnedObjectsManager<GameObject>
     {
-        private Dictionary<int, GameObject> spawnedObjects = new Dictionary<int, GameObject>();
+        private Dictionary<int, GameObject> _spawnedObjects = new Dictionary<int, GameObject>();
 
         public bool AddSpawnedObject(GameObject spawnedObject)
         {
             if (spawnedObject == null) return false;
 
-            return spawnedObjects.TryAdd(spawnedObject.GetInstanceID(), spawnedObject);
+            return _spawnedObjects.TryAdd(spawnedObject.GetInstanceID(), spawnedObject);
         }
 
         public GameObject RemoveSpawnedObject(int instanceID)
         {
-            if (spawnedObjects.Remove(instanceID, out var obj))
+            if (_spawnedObjects.Remove(instanceID, out var obj))
             {
                 return obj;
             }
             return null;
         }
 
-        public int GetSpawnedObjectsCount() { return spawnedObjects.Count; }
+        public int GetSpawnedObjectsCount() { return _spawnedObjects.Count; }
     }
 }

@@ -1,7 +1,8 @@
-using NLKARExperience.Core.Interfaces.Handlers;
 using NLKARExperience.Core.EventBus.EventData.Input;
+using NLKARExperience.Core.Interfaces.Handlers;
 using NLKARExperience.Core.Interfaces.Systems;
 using NLKARExperience.Core.Models;
+using NLKARExperience.Core.Utils;
 
 using UnityEngine;
 
@@ -12,25 +13,16 @@ namespace NLKARExperience.AR.Handlers
     public class ARSpawnObjectHandler : MonoBehaviour, IEventHandler<ARPlaneTappedEventData>
     {
         [SerializeField] MonoBehaviour arSpawnObjectSystemReference;
+
         ISpawnSystem _arSpawnSystem; 
 
         void Start()
         {
-            if (arSpawnObjectSystemReference == null)
+            bool validationSucceeded = ValidateScriptDependencies();
+            if (!validationSucceeded)
             {
-                Logger.Log(LogSeverityLevel.Error, $"Missing ISpawnSystem reference in {nameof(ARSpawnObjectHandler)}");
                 enabled = false;
-                return;
             }
-
-            if (arSpawnObjectSystemReference is not ISpawnSystem)
-            {
-                Logger.Log(LogSeverityLevel.Error, $"The referenced ISpawnSystem is not of this type in {nameof(ARSpawnObjectHandler)}");
-                enabled = false;
-                return;
-            }
-
-            _arSpawnSystem = (ISpawnSystem) arSpawnObjectSystemReference;
         }
 
         public void HandleEvent(ARPlaneTappedEventData eventData)
@@ -38,6 +30,18 @@ namespace NLKARExperience.AR.Handlers
             if (!enabled) return;
 
             _arSpawnSystem.SpawnObject(eventData.Pose);
+        }
+
+        private bool ValidateScriptDependencies()
+        {
+            if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnSystem>(arSpawnObjectSystemReference, out _arSpawnSystem))
+            {
+                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(arSpawnObjectSystemReference)}' does not implement or contain required dependency " +
+                                                   $"of type 'ISpawnSystem' in {nameof(ARSpawnObjectHandler)}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

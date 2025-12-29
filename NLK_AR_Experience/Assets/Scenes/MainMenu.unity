@@ -375,10 +375,10 @@ GameObject:
   - component: {fileID: 66893188}
   - component: {fileID: 66893187}
   - component: {fileID: 66893186}
-  - component: {fileID: 66893192}
-  - component: {fileID: 66893191}
   - component: {fileID: 66893193}
   - component: {fileID: 66893194}
+  - component: {fileID: 66893191}
+  - component: {fileID: 66893192}
   m_Layer: 5
   m_Name: MainUI
   m_TagString: Untagged
@@ -507,7 +507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63df048b4854c434ba2d4df902b48861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.Controllers.UI.AnimatedMenuTransitionController
-  menuManagerReference: {fileID: 900903987}
+  sceneMenusRegistryReference: {fileID: 900903987}
   UIAnimationControllerReference: {fileID: 66893194}
 --- !u!114 &66893194
 MonoBehaviour:
@@ -2679,7 +2679,7 @@ GameObject:
   - component: {fileID: 900903986}
   - component: {fileID: 900903987}
   m_Layer: 0
-  m_Name: MenuManager
+  m_Name: MenuRegistry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2713,15 +2713,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.Managers.UI.MenuManager
   menus:
-  - Type: 0
+  - ID: 0
     Panel: {fileID: 77611247}
-  - Type: 1
+  - ID: 1
     Panel: {fileID: 1449300436}
-  - Type: 2
+  - ID: 2
     Panel: {fileID: 30509732}
-  - Type: 3
+  - ID: 3
     Panel: {fileID: 1305644595}
-  - Type: 4
+  - ID: 4
     Panel: {fileID: 194330024}
 --- !u!1 &901790003
 GameObject:
@@ -2732,8 +2732,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 901790004}
-  - component: {fileID: 901790006}
   - component: {fileID: 901790005}
+  - component: {fileID: 901790006}
   m_Layer: 0
   m_Name: Logger
   m_TagString: Untagged
@@ -5432,9 +5432,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1821640085}
-  - component: {fileID: 1821640087}
-  - component: {fileID: 1821640088}
   - component: {fileID: 1821640089}
+  - component: {fileID: 1821640088}
+  - component: {fileID: 1821640087}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged

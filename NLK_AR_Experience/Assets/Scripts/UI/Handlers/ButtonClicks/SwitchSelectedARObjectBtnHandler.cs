@@ -12,7 +12,7 @@ namespace NLKARExperience.UI.Handlers.ButtonClicks
 
         public void OnButtonClick()
         {
-            EventBus.Publish(new ARObjectToSpawnChangeRequestedEventData(newARObjectIndex));
+            EventBus.Publish(new SelectSpawnTypeRequestEventData(newARObjectIndex));
         }
     }
 }
