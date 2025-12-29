@@ -1,5 +1,5 @@
 using NLKARExperience.Core.Interfaces.Controllers.UI;
-using NLKARExperience.Core.Interfaces.Managers.UI;
+using NLKARExperience.Core.Interfaces.Registries;
 using NLKARExperience.Core.Models;
 
 using UnityEngine;
@@ -10,43 +10,60 @@ namespace NLKARExperience.UI.Controllers
 {
     public class ToggleMenuTransitionController : MonoBehaviour, IMenuTransitionController
     {
-        [SerializeField] private MonoBehaviour menuManager;
-
-        private IUIMenuManager _menuManager;
+        [SerializeField] private MonoBehaviour sceneMenusRegistryReference;
+        private IObjectRegistry<MenuId, GameObject> _sceneMenusRegistry;
 
         void Start()
         {
-            if (menuManager == null)
+            if (sceneMenusRegistryReference == null)
             {
-                Logger.Log(LogSeverityLevel.Error, $"Missing IUIMenuManager reference in {nameof(ToggleMenuTransitionController)}");
+                Logger.Log(LogSeverityLevel.Error, $"Missing IObjectRegistry<MenuId, GameObject> reference in {nameof(ToggleMenuTransitionController)}");
                 enabled = false;
                 return;
             }
 
-            if (menuManager is not IUIMenuManager)
+            if (sceneMenusRegistryReference is not IObjectRegistry<MenuId, GameObject>)
             {
-                Logger.Log(LogSeverityLevel.Error, $"The cached IUIMenuManager reference is of wrong type in {nameof(ToggleMenuTransitionController)}");
+                Logger.Log(LogSeverityLevel.Error, $"The cached IObjectRegistry<MenuId, GameObject> reference is of wrong type in {nameof(ToggleMenuTransitionController)}");
                 enabled = false;
                 return;
             }
 
-            _menuManager = (IUIMenuManager)menuManager;
+            _sceneMenusRegistry = (IObjectRegistry<MenuId, GameObject>) sceneMenusRegistryReference;
         }
 
-        public void Transition(MenuId fromMenu, MenuId toMenu)
+        public void Transition(MenuId fromMenuID, MenuId toMenuID)
         {
             if (!enabled) return;
 
-            var (fromMenuPanel, toMenuPanel) = getMenus(fromMenu, toMenu);
-            if (fromMenuPanel == null || toMenuPanel == null)
+            var (fromMenu, toMenu) = getMenus(fromMenuID, toMenuID);
+            if (fromMenu == null || toMenu == null)
             {
                 return;
             }
 
-            fromMenuPanel.SetActive(false);
-            toMenuPanel.SetActive(true);
+            fromMenu.SetActive(false);
+            toMenu.SetActive(true);
         }
 
-        private (GameObject fromMenuPanel, GameObject toMenuPanel) getMenus(MenuId fromMenu, MenuId toMenu) => (_menuManager.GetMenu(fromMenu), _menuManager.GetMenu(toMenu));
+
+        private (GameObject fromMenuPanel, GameObject toMenuPanel) getMenus(MenuId fromMenuID, MenuId toMenuID)
+        {
+            GameObject fromMenu;
+            if(!_sceneMenusRegistry.TryGetObject(fromMenuID, out fromMenu))
+            {
+                Logger.Log(LogSeverityLevel.Error, $"Could not retrive menu with ID: {fromMenuID} from the registry in {nameof(ToggleMenuTransitionController)}");
+                return (null, null);
+            }
+
+            GameObject toMenu;
+            if (!_sceneMenusRegistry.TryGetObject(toMenuID, out toMenu))
+            {
+                Logger.Log(LogSeverityLevel.Error, $"Could not retrive menu with ID: {toMenu} from the registry in {nameof(ToggleMenuTransitionController)}");
+                return (null, null);
+            }
+
+            return (fromMenu, toMenu);
+        }
     }
 }

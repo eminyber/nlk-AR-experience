@@ -19,7 +19,6 @@ namespace NLKARExperience.Input.Handlers
 
         private List<ARRaycastHit> _raycastHits = new List<ARRaycastHit>();
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             if (arRaycastManager != null) return;

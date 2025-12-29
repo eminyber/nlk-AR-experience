@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 157548450}
   - component: {fileID: 157548451}
   m_Layer: 0
-  m_Name: ARSpawnableObjectsManager
+  m_Name: ARSpawnableObjectsRegistry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -564,8 +564,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 161428652}
-  - component: {fileID: 161428654}
   - component: {fileID: 161428653}
+  - component: {fileID: 161428654}
   m_Layer: 0
   m_Name: Logger
   m_TagString: Untagged
@@ -627,7 +627,7 @@ GameObject:
   - component: {fileID: 329933514}
   - component: {fileID: 329933513}
   m_Layer: 0
-  m_Name: ARSpawnObjectSelectionManager
+  m_Name: ARObjectSpawnSelectionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1177,37 +1177,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1 &646172233
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 646172234}
-  m_Layer: 0
-  m_Name: SettingsManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &646172234
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646172233}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1500887498}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &689452733
 GameObject:
   m_ObjectHideFlags: 0
@@ -2825,7 +2794,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2007697053}
-  - {fileID: 646172234}
   - {fileID: 157548450}
   - {fileID: 329933511}
   - {fileID: 784364387}
@@ -3266,9 +3234,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1803226739}
-  - component: {fileID: 1803226742}
-  - component: {fileID: 1803226741}
   - component: {fileID: 1803226740}
+  - component: {fileID: 1803226743}
+  - component: {fileID: 1803226744}
+  - component: {fileID: 1803226741}
+  - component: {fileID: 1803226742}
   m_Layer: 0
   m_Name: ARSpawnObjectSystem
   m_TagString: Untagged
@@ -3303,9 +3273,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4d8ef979a16ffa4d93d0a7fd066a8e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ARSpawnObjectSystem
-  spawnableARObjectsManagerReference: {fileID: 157548451}
-  spawnObjectSelectionManagerReference: {fileID: 329933512}
+  spawnableARObjectsRegistryReference: {fileID: 157548451}
+  spawnSelectionManagerReference: {fileID: 329933512}
   spawnedObjectsManagerReference: {fileID: 784364388}
+  spawnStrategyReference: {fileID: 1803226744}
 --- !u!114 &1803226741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3332,6 +3303,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.AR.Listeners.ARPlaneTappedListener
   eventHandlerReference: {fileID: 1803226741}
+--- !u!114 &1803226743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803226738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d676df66b304024faa9b9bf5f169646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.AR.Strategies.SpawnStrategies.SimpleSpawnStrategy
+--- !u!114 &1803226744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803226738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c54326538d7516c4492938bf175baa81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.AR.Strategies.SpawnStrategies.AnchoredSpawnStrategy
+  anchorManager: {fileID: 2033293157}
 --- !u!1 &1880411253
 GameObject:
   m_ObjectHideFlags: 0
@@ -3388,9 +3384,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2007697053}
-  - component: {fileID: 2007697056}
-  - component: {fileID: 2007697055}
   - component: {fileID: 2007697054}
+  - component: {fileID: 2007697055}
+  - component: {fileID: 2007697056}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -3611,6 +3607,7 @@ GameObject:
   - component: {fileID: 2033293149}
   - component: {fileID: 2033293148}
   - component: {fileID: 2033293147}
+  - component: {fileID: 2033293157}
   - component: {fileID: 2033293156}
   - component: {fileID: 2033293155}
   - component: {fileID: 2033293154}
@@ -3771,6 +3768,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NLKARExperience.Listeners.UserScreenInputListener
   UserInputHandlerReference: {fileID: 2033293155}
+--- !u!114 &2033293157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033293146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.ARAnchorManager
+  <trackablesChanged>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  m_AnchorPrefab: {fileID: 0}
 --- !u!1 &2039297126
 GameObject:
   m_ObjectHideFlags: 0

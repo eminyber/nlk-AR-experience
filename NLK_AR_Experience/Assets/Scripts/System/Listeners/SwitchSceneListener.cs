@@ -3,6 +3,7 @@ using NLKARExperience.Core.EventBus.EventData.System;
 using NLKARExperience.Core.Interfaces.Handlers;
 using NLKARExperience.Core.Interfaces.Listeners;
 using NLKARExperience.Core.Models;
+using NLKARExperience.Core.Utils;
 
 using UnityEngine;
 
@@ -23,22 +24,11 @@ namespace NLKARExperience.System.Listeners
 
         void Start()
         {
-            if (sceneSwitchHandlerReference is null)
+            bool validationSucceeded = ValidateScriptDependencies();
+            if (!validationSucceeded)
             {
                 enabled = false;
-                Logger.Log(LogSeverityLevel.Error, $"Missing IEventHandler<T> reference in {nameof(SwitchSceneListener)}");
-                return;
             }
-
-            if (sceneSwitchHandlerReference is not IEventHandler<SwitchSceneRequestedEventData>)
-            {
-                enabled = false;
-                Logger.Log(LogSeverityLevel.Error, $"The eventHandler reference is not type of {typeof(IEventHandler<SwitchSceneRequestedEventData>)} " +
-                $"but {sceneSwitchHandlerReference.GetType()} in {nameof(SwitchSceneListener)}");
-                return;
-            }
-
-            _sceneSwitcheventHandler = (IEventHandler<SwitchSceneRequestedEventData>) sceneSwitchHandlerReference;
         }
 
         void OnDisable()
@@ -49,6 +39,18 @@ namespace NLKARExperience.System.Listeners
         public void OnEvent(SwitchSceneRequestedEventData eventData)
         {
             _sceneSwitcheventHandler.HandleEvent(eventData);
+        }
+
+        private bool ValidateScriptDependencies()
+        {
+            if (!ValidateMonoDependencyUtils.ValidateDependency<IEventHandler<SwitchSceneRequestedEventData>>(sceneSwitchHandlerReference, out _sceneSwitcheventHandler))
+            {
+                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(sceneSwitchHandlerReference)}' does not implement or contain required dependency " +
+                                                   $"of type 'IEventHandler<SwitchSceneRequestedEventData>' in {nameof(SwitchSceneListener)}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

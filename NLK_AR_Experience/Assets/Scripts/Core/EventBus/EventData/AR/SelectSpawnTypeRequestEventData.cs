@@ -1,10 +1,10 @@
 namespace NLKARExperience.Core.EventBus.EventData.AR
 {
-    public readonly struct ARObjectToSpawnChangeRequestedEventData
+    public readonly struct SelectSpawnTypeRequestEventData
     {
         public readonly int Index;
         
-        public ARObjectToSpawnChangeRequestedEventData(int index)
+        public SelectSpawnTypeRequestEventData(int index)
         {
             Index = index;
         }
