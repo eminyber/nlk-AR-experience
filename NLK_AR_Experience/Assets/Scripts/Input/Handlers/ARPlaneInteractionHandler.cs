@@ -1,7 +1,7 @@
-using NLKARExperience.Core.Interfaces.Handlers.Input;
 using NLKARExperience.Core.Models;
-using NLKARExperience.Core.EventBus.EventData.Input;
 using NLKARExperience.Core.EventBus;
+using NLKARExperience.Core.EventBus.EventData.Input;
+using NLKARExperience.Core.Interfaces.Handlers.Input;
 
 using System.Collections.Generic;
 
@@ -25,7 +25,6 @@ namespace NLKARExperience.Input.Handlers
 
             Logger.Log(LogSeverityLevel.Error, $"Missing ARRaycastManager reference in {nameof(ARPlaneInteractionHandler)}.");
             enabled = false;
-            return;
         }
 
         public bool ProcessInput(Vector2 screenTouchPosition)

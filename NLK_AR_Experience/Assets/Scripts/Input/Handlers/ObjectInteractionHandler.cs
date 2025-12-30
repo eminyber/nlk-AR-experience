@@ -1,6 +1,8 @@
-using NLKARExperience.Core.Interfaces.Handlers.Input;
-using NLKARExperience.Core.Interfaces.Models;
 using NLKARExperience.Core.Models;
+using NLKARExperience.Core.EventBus;
+using NLKARExperience.Core.Interfaces.Models;
+using NLKARExperience.Core.EventBus.EventData.Input;
+using NLKARExperience.Core.Interfaces.Handlers.Input;
 
 using UnityEngine;
 
@@ -38,12 +40,12 @@ namespace NLKARExperience.Input.Handlers
                 IInteractable selectable = hit.transform.GetComponent<IInteractable>();
                 if (selectable != null)
                 {
+                    EventBus.Publish<InteractableObjectTappedEventData>(new InteractableObjectTappedEventData(hit.transform));   
                     return true;
                 }
             }
 
             return false;
         }
-
     }
 }
