@@ -8,7 +8,7 @@ using UnityEngine;
 
 using Logger = NLKARExperience.Core.Utils.Logger;
 
-public class SelectARObjectToSpawnHandler : MonoBehaviour, IEventHandler<SelectSpawnTypeRequestEventData>
+public class SelectARObjectTypeToSpawnHandler : MonoBehaviour, IEventHandler<SelectSpawnTypeRequestEventData>
 {
     [SerializeField] MonoBehaviour spawnObjectSelectionManagerReference;
 
@@ -35,7 +35,7 @@ public class SelectARObjectToSpawnHandler : MonoBehaviour, IEventHandler<SelectS
         if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnSelectionManager>(spawnObjectSelectionManagerReference, out _spawnObjectSelectionManager))
         {
             Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnObjectSelectionManagerReference)}' does not implement or contain required dependency " +
-                                               $"of type 'ISpawnSelectionManager' in {nameof(SelectARObjectToSpawnHandler)}");
+                                               $"of type 'ISpawnSelectionManager' in {nameof(SelectARObjectTypeToSpawnHandler)}");
             return false;
         }
 

@@ -11,15 +11,15 @@ using Logger = NLKARExperience.Core.Utils.Logger;
 
 namespace NLKARExperience.AR.Listeners
 {
-    public class ARPlaneTappedListener : MonoBehaviour, IEventListener<ARPlaneTappedEventData>
+    public class ARObjectTappedListener : MonoBehaviour, IEventListener<InteractableObjectTappedEventData>
     {
         [SerializeField] MonoBehaviour eventHandlerReference;
 
-        private IEventHandler<ARPlaneTappedEventData> _eventHandler;
+        private IEventHandler<InteractableObjectTappedEventData> _eventHandler;
 
         void OnEnable()
         {
-            EventBus.Register<ARPlaneTappedEventData>(this);
+            EventBus.Register<InteractableObjectTappedEventData>(this);
         }
 
         void Start()
@@ -33,20 +33,20 @@ namespace NLKARExperience.AR.Listeners
 
         void OnDisable()
         {
-            EventBus.Unregister<ARPlaneTappedEventData>(this);
+            EventBus.Unregister<InteractableObjectTappedEventData>(this);
         }
 
-        public void OnEvent(ARPlaneTappedEventData eventData)
+        public void OnEvent(InteractableObjectTappedEventData eventData)
         {
             _eventHandler.HandleEvent(eventData);
         }
 
         private bool ValidateScriptDependencies()
         {
-            if (!ValidateMonoDependencyUtils.ValidateDependency<IEventHandler<ARPlaneTappedEventData>>(eventHandlerReference, out _eventHandler))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<IEventHandler<InteractableObjectTappedEventData>>(eventHandlerReference, out _eventHandler))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(eventHandlerReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'IEventHandler<ARPlaneTappedEventData>' in {nameof(ARPlaneTappedListener)}");
+                                                   $"of type 'IEventHandler<InteractableObjectTappedEventData>' in {nameof(ARObjectTappedListener)}");
                 return false;
             }
 

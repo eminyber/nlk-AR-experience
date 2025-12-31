@@ -1,18 +1,19 @@
-using NLKARExperience.Core.Interfaces.Managers;
-using NLKARExperience.Core.Interfaces.Registries;
-using NLKARExperience.Core.Interfaces.Systems;
-using NLKARExperience.Core.Interfaces.Strategies;
-using NLKARExperience.Core.Models;
 using NLKARExperience.Core.Utils;
+using NLKARExperience.Core.Models;
+using NLKARExperience.Core.Interfaces.Systems;
+using NLKARExperience.Core.Interfaces.Managers;
+using NLKARExperience.Core.Interfaces.Strategies;
+using NLKARExperience.Core.Interfaces.Registries;
+
+using System.Threading.Tasks;
 
 using UnityEngine;
 
 using Logger = NLKARExperience.Core.Utils.Logger;
-using System.Threading.Tasks;
 
 namespace NLKARExperience.AR.Systems
 {
-    public class SpawnARObjectsSystem : MonoBehaviour, ISpawnSystem
+    public class SpawnARObjectSystem : MonoBehaviour, ISpawnSystem
     {
         [Header("Spawn System Dependencies")]
         [SerializeField] MonoBehaviour spawnableARObjectsRegistryReference;
@@ -32,9 +33,9 @@ namespace NLKARExperience.AR.Systems
         {
            bool validationSucceeded = ValidateScriptDependencies();
            if (!validationSucceeded)
-            {
-                enabled = false;
-            } 
+           {
+               enabled = false;
+           } 
         }
 
         public async void SpawnObject(Pose pose)
@@ -102,28 +103,28 @@ namespace NLKARExperience.AR.Systems
             if (!ValidateMonoDependencyUtils.ValidateDependency<IObjectRegistry<int, ARSpawnableObject>>(spawnableARObjectsRegistryReference, out _spawnableARObjectsRegistry))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnableARObjectsRegistryReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'IObjectRegistry<int, ARSpawnableObject>' in {nameof(SpawnARObjectsSystem)}");
+                                                   $"of type 'IObjectRegistry<int, ARSpawnableObject>' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }
 
             if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnSelectionManager>(spawnSelectionManagerReference, out _spawnSelectionManager))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnSelectionManagerReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'ISpawnSelectionManager' in {nameof(SpawnARObjectsSystem)}");
+                                                   $"of type 'ISpawnSelectionManager' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }
 
             if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnedObjectsManager<GameObject>>(spawnedObjectsManagerReference, out _spawnedObjectsManager))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnedObjectsManagerReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'ISpawnedObjectsManager<GameObject>' in {nameof(SpawnARObjectsSystem)}");
+                                                   $"of type 'ISpawnedObjectsManager<GameObject>' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }
 
             if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnStrategy>(spawnStrategyReference, out _spawnStrategy))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnStrategyReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'ISpawnStrategy' in {nameof(SpawnARObjectsSystem)}");
+                                                   $"of type 'ISpawnStrategy' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }
 
