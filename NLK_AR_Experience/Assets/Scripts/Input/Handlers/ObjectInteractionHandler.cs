@@ -40,7 +40,7 @@ namespace NLKARExperience.Input.Handlers
                 IInteractable selectable = hit.transform.GetComponent<IInteractable>();
                 if (selectable != null)
                 {
-                    EventBus.Publish<InteractableObjectTappedEventData>(new InteractableObjectTappedEventData(hit.transform));   
+                    EventBus.Publish<InteractableTappedEventData>(new InteractableTappedEventData(hit.transform));   
                     return true;
                 }
             }

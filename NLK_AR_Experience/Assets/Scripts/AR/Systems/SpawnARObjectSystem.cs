@@ -16,15 +16,15 @@ namespace NLKARExperience.AR.Systems
     public class SpawnARObjectSystem : MonoBehaviour, ISpawnSystem
     {
         [Header("Spawn System Dependencies")]
-        [SerializeField] MonoBehaviour spawnableARObjectsRegistryReference;
-        [SerializeField] MonoBehaviour spawnSelectionManagerReference;
-        [SerializeField] MonoBehaviour spawnedObjectsManagerReference;
+        [SerializeField] MonoBehaviour SpawnableARObjectsRegistryReference;
+        [SerializeField] MonoBehaviour SpawnSelectionManagerReference;
+        [SerializeField] MonoBehaviour SpawnedObjectsManagerReference;
 
         [Header("Spawn Strategy")]
-        [SerializeField] MonoBehaviour spawnStrategyReference;
+        [SerializeField] MonoBehaviour SpawnStrategyReference;
 
         private IObjectRegistry<int, ARSpawnableObject>  _spawnableARObjectsRegistry;
-        private ISpawnSelectionManager _spawnSelectionManager;
+        private ISelectionManager<int> _spawnSelectionManager;
         private ISpawnedObjectsManager<GameObject> _spawnedObjectsManager;
 
         private ISpawnStrategy _spawnStrategy;
@@ -43,7 +43,7 @@ namespace NLKARExperience.AR.Systems
             if (!enabled) return;
 
             ARSpawnableObject objectToSpawn;
-            bool retrivalSucceeded = retrieveObjectToSpawn(out objectToSpawn);
+            bool retrivalSucceeded = RetrieveObjectToSpawn(out objectToSpawn);
             if (!retrivalSucceeded)
             {
                 return;
@@ -55,14 +55,14 @@ namespace NLKARExperience.AR.Systems
                 return;
             }
 
-            bool storeSucceeded = storeSpawnedObject(spawnedObject);
+            bool storeSucceeded = StoreSpawnedObject(spawnedObject);
             if (!storeSucceeded)
             {
                 return;
             }
         }
 
-        private bool storeSpawnedObject(GameObject spawnedObject)
+        private bool StoreSpawnedObject(GameObject spawnedObject)
         {
             var success = _spawnedObjectsManager.AddSpawnedObject(spawnedObject);
             if (!success)
@@ -86,12 +86,12 @@ namespace NLKARExperience.AR.Systems
             return (true, spawnedObject);
         }
 
-        private bool retrieveObjectToSpawn(out ARSpawnableObject objectToSpawn)
+        private bool RetrieveObjectToSpawn(out ARSpawnableObject objectToSpawn)
         {
-            var success = _spawnableARObjectsRegistry.TryGetObject(_spawnSelectionManager.CurrentSelectedObjectKey, out objectToSpawn);
+            var success = _spawnableARObjectsRegistry.TryGetObject(_spawnSelectionManager.CurrentSelected, out objectToSpawn);
             if (!success)
             {
-                Logger.Log(LogSeverityLevel.Warning, $"No spawnableARObject exists with index: {_spawnSelectionManager.CurrentSelectedObjectKey}");
+                Logger.Log(LogSeverityLevel.Warning, $"No spawnableARObject exists with index: {_spawnSelectionManager.CurrentSelected}");
                 return false;
             }
 
@@ -100,30 +100,30 @@ namespace NLKARExperience.AR.Systems
 
         private bool ValidateScriptDependencies()
         {
-            if (!ValidateMonoDependencyUtils.ValidateDependency<IObjectRegistry<int, ARSpawnableObject>>(spawnableARObjectsRegistryReference, out _spawnableARObjectsRegistry))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<IObjectRegistry<int, ARSpawnableObject>>(SpawnableARObjectsRegistryReference, out _spawnableARObjectsRegistry))
             {
-                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnableARObjectsRegistryReference)}' does not implement or contain required dependency " +
+                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(SpawnableARObjectsRegistryReference)}' does not implement or contain required dependency " +
                                                    $"of type 'IObjectRegistry<int, ARSpawnableObject>' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }
 
-            if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnSelectionManager>(spawnSelectionManagerReference, out _spawnSelectionManager))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<ISelectionManager<int>>(SpawnSelectionManagerReference, out _spawnSelectionManager))
             {
-                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnSelectionManagerReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'ISpawnSelectionManager' in {nameof(SpawnARObjectSystem)}");
+                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(SpawnSelectionManagerReference)}' does not implement or contain required dependency " +
+                                                   $"of type 'ISelectionManager<int>' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }
 
-            if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnedObjectsManager<GameObject>>(spawnedObjectsManagerReference, out _spawnedObjectsManager))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnedObjectsManager<GameObject>>(SpawnedObjectsManagerReference, out _spawnedObjectsManager))
             {
-                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnedObjectsManagerReference)}' does not implement or contain required dependency " +
+                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(SpawnedObjectsManagerReference)}' does not implement or contain required dependency " +
                                                    $"of type 'ISpawnedObjectsManager<GameObject>' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }
 
-            if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnStrategy>(spawnStrategyReference, out _spawnStrategy))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnStrategy>(SpawnStrategyReference, out _spawnStrategy))
             {
-                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnStrategyReference)}' does not implement or contain required dependency " +
+                Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(SpawnStrategyReference)}' does not implement or contain required dependency " +
                                                    $"of type 'ISpawnStrategy' in {nameof(SpawnARObjectSystem)}");
                 return false;
             }

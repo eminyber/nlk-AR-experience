@@ -9,17 +9,18 @@ using UnityEngine;
 
 using Logger = NLKARExperience.Core.Utils.Logger;
 
+
 namespace NLKARExperience.AR.Listeners
 {
-    public class ARObjectTappedListener : MonoBehaviour, IEventListener<InteractableObjectTappedEventData>
+    public class InteractableARObjectTappedListener : MonoBehaviour, IEventListener<InteractableTappedEventData>
     {
         [SerializeField] MonoBehaviour eventHandlerReference;
 
-        private IEventHandler<InteractableObjectTappedEventData> _eventHandler;
+        private IEventHandler<InteractableTappedEventData> _eventHandler;
 
         void OnEnable()
         {
-            EventBus.Register<InteractableObjectTappedEventData>(this);
+            EventBus.Register<InteractableTappedEventData>(this);
         }
 
         void Start()
@@ -33,20 +34,20 @@ namespace NLKARExperience.AR.Listeners
 
         void OnDisable()
         {
-            EventBus.Unregister<InteractableObjectTappedEventData>(this);
+            EventBus.Unregister<InteractableTappedEventData>(this);
         }
 
-        public void OnEvent(InteractableObjectTappedEventData eventData)
+        public void OnEvent(InteractableTappedEventData eventData)
         {
             _eventHandler.HandleEvent(eventData);
         }
 
         private bool ValidateScriptDependencies()
         {
-            if (!ValidateMonoDependencyUtils.ValidateDependency<IEventHandler<InteractableObjectTappedEventData>>(eventHandlerReference, out _eventHandler))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<IEventHandler<InteractableTappedEventData>>(eventHandlerReference, out _eventHandler))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(eventHandlerReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'IEventHandler<InteractableObjectTappedEventData>' in {nameof(ARObjectTappedListener)}");
+                                                   $"of type 'IEventHandler<InteractableObjectTappedEventData>' in {nameof(InteractableARObjectTappedListener)}");
                 return false;
             }
 
