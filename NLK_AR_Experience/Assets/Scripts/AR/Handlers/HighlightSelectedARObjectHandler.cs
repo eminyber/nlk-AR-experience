@@ -1,6 +1,5 @@
-using NLKARExperience.Core.EventBus.EventData.Input;
+using NLKARExperience.Core.Interfaces.Controllers;
 using NLKARExperience.Core.Interfaces.Handlers;
-using NLKARExperience.Core.Interfaces.Managers;
 using NLKARExperience.Core.Models;
 using NLKARExperience.Core.Utils;
 
@@ -10,11 +9,11 @@ using Logger = NLKARExperience.Core.Utils.Logger;
 
 namespace NLKARExperience.AR.Handlers
 {
-    public class HighlightOnInteractableObjectTappedHandler : MonoBehaviour, IEventHandler<InteractableObjectTappedEventData>
+    public class HighlightSelectedARObjectHandler : MonoBehaviour, IEventHandler<ARObjectSelectionStateChangedEventData>
     {
         [SerializeField] MonoBehaviour HighlightManagerReference;
 
-        IHighlightManager _highlightManager;
+        private IHighlightController _highlightManager;
 
         void Start()
         {
@@ -25,19 +24,19 @@ namespace NLKARExperience.AR.Handlers
             }
         }
         
-        public void HandleEvent(InteractableObjectTappedEventData eventData)
+        public void HandleEvent(ARObjectSelectionStateChangedEventData eventData)
         {
             if (!enabled) return;
-
-            _highlightManager.OnHighLight(eventData.SelectedTransform);
+ 
+            _highlightManager.OnHighLight(eventData.SelectedARObject);
         }
 
         private bool ValidateScriptDependencies()
         {
-            if (!ValidateMonoDependencyUtils.ValidateDependency<IHighlightManager>(HighlightManagerReference, out _highlightManager))
+            if (!ValidateMonoDependencyUtils.ValidateDependency<IHighlightController>(HighlightManagerReference, out _highlightManager))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(HighlightManagerReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'IHighlightManager' in {nameof(HighlightOnInteractableObjectTappedHandler)}");
+                                                   $"of type 'IHighlightManager' in {nameof(HighlightSelectedARObjectHandler)}");
                 return false;
             }
 

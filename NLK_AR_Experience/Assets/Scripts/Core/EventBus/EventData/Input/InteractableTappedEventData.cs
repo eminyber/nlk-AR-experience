@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace NLKARExperience.Core.EventBus.EventData.Input
 {
-    public readonly struct InteractableObjectTappedEventData
+    public readonly struct InteractableTappedEventData
     {
         public Transform SelectedTransform { get; }
 
-        public InteractableObjectTappedEventData(Transform transform)
+        public InteractableTappedEventData(Transform transform)
         {
             SelectedTransform = transform;
         }

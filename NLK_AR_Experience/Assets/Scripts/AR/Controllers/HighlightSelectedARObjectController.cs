@@ -1,4 +1,4 @@
-using NLKARExperience.Core.Interfaces.Managers;
+using NLKARExperience.Core.Interfaces.Controllers;
 using NLKARExperience.Core.Interfaces.Strategies;
 using NLKARExperience.Core.Models;
 using NLKARExperience.Core.Utils;
@@ -7,9 +7,9 @@ using UnityEngine;
 
 using Logger = NLKARExperience.Core.Utils.Logger;
 
-namespace NLKARExperience.AR.Managers
+namespace NLKARExperience.AR.Controllers
 {
-    public class HighlightARObjectManager : MonoBehaviour, IHighlightManager
+    public class HighlightSelectedARObjectController : MonoBehaviour, IHighlightController
     {
         [SerializeField] MonoBehaviour HighlightStrategyReference;
 
@@ -25,23 +25,33 @@ namespace NLKARExperience.AR.Managers
             }
         }
 
-        public void OnHighLight(Transform transform)
+        public void OnHighLight(Transform target)
         {
             if (!enabled) return;
 
-            if (transform == null) return;
-
-            if (transform.Equals(_currentHighlightedObject))
+            if (target == null)
             {
-                _highlightStrategy.OnDeselect(_currentHighlightedObject);
-                _currentHighlightedObject = null;
+                Deselect();
             }
             else
             {
-                _highlightStrategy.OnDeselect(_currentHighlightedObject);
-                _highlightStrategy.OnSelect(transform);
-                _currentHighlightedObject=transform;
+                Deselect();
+                Select(target);
             }
+        }
+
+        private void Deselect()
+        {
+            if (_currentHighlightedObject != null)
+                _highlightStrategy.OnDeselect(_currentHighlightedObject);
+            
+            _currentHighlightedObject = null;
+        }
+
+        private void Select(Transform target)
+        {
+            _highlightStrategy.OnSelect(target);
+            _currentHighlightedObject = target;
         }
 
         private bool ValidateDependencies()
@@ -49,7 +59,7 @@ namespace NLKARExperience.AR.Managers
             if(!ValidateMonoDependencyUtils.ValidateDependency<ISelectionResponseStrategy>(HighlightStrategyReference, out _highlightStrategy))
             {
                 Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(HighlightStrategyReference)}' does not implement or contain required dependency " +
-                                                   $"of type 'ISelectionResponseStrategy' in {nameof(HighlightARObjectManager)}");
+                                                   $"of type 'ISelectionResponseStrategy' in {nameof(HighlightSelectedARObjectController)}");
                 return false;
             }
 

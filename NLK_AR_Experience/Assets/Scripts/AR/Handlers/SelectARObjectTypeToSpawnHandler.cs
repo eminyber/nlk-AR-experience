@@ -12,7 +12,7 @@ public class SelectARObjectTypeToSpawnHandler : MonoBehaviour, IEventHandler<Sel
 {
     [SerializeField] MonoBehaviour spawnObjectSelectionManagerReference;
 
-    private ISpawnSelectionManager _spawnObjectSelectionManager;
+    private ISelectionManager<int> _spawnObjectSelectionManager;
 
     void Start()
     {
@@ -27,15 +27,15 @@ public class SelectARObjectTypeToSpawnHandler : MonoBehaviour, IEventHandler<Sel
     {
         if (!enabled) return;
 
-        _spawnObjectSelectionManager.SelectObject(eventData.Index);
+        _spawnObjectSelectionManager.SetSelected(eventData.Index);
     }
 
     private bool ValidateScriptDependencies()
     {
-        if (!ValidateMonoDependencyUtils.ValidateDependency<ISpawnSelectionManager>(spawnObjectSelectionManagerReference, out _spawnObjectSelectionManager))
+        if (!ValidateMonoDependencyUtils.ValidateDependency<ISelectionManager<int>>(spawnObjectSelectionManagerReference, out _spawnObjectSelectionManager))
         {
             Logger.Log(LogSeverityLevel.Error, $"Validation failed: MonoBehaviour '{nameof(spawnObjectSelectionManagerReference)}' does not implement or contain required dependency " +
-                                               $"of type 'ISpawnSelectionManager' in {nameof(SelectARObjectTypeToSpawnHandler)}");
+                                               $"of type 'ISelectionManager<int>' in {nameof(SelectARObjectTypeToSpawnHandler)}");
             return false;
         }
 
