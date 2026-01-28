@@ -1,7 +1,7 @@
 using NLKARExperience.Core.Interfaces.Managers;
 
 using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine;
 
 namespace NLKARExperience.AR.Managers
@@ -27,5 +27,10 @@ namespace NLKARExperience.AR.Managers
         }
 
         public int GetSpawnedObjectsCount() { return _spawnedObjects.Count; }
+
+        public IReadOnlyList<int> GetKeys()
+        {
+            return _spawnedObjects.Keys.ToList();
+        }
     }
 }

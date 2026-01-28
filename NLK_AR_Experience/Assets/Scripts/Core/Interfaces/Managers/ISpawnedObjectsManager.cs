@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace NLKARExperience.Core.Interfaces.Managers
@@ -7,5 +9,6 @@ namespace NLKARExperience.Core.Interfaces.Managers
         bool AddSpawnedObject(T spawnedObject);
         T RemoveSpawnedObject(int instanceID);
         int GetSpawnedObjectsCount();
+        IReadOnlyList<int> GetKeys();
     }
 }

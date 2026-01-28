@@ -26,7 +26,7 @@ public class DeleteSelectedARObjectHandler : MonoBehaviour, IEventHandler<Delete
     {
         if (!enabled) return;
 
-        _arObjectDeletionSystem.DeleteSelectedObjects();
+        _arObjectDeletionSystem.DeleteSelectedObject();
     }
 
     private bool ValidateScriptDependencies()
