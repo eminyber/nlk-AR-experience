@@ -65,18 +65,21 @@ namespace NLKARExperience.AR.Systems
                 DeleteSelectedObject();
             }
 
+            //Improve the Error handling later
             var keys = _spawnedObjectsManager.GetKeys();
             foreach(var key in keys)
             {
                 var (removalSucceeded, gameObjectToDelete) = RetrieveGameObjectToDelete(key);
                 if (!removalSucceeded)
                 {
+                    Logger.Log(LogSeverityLevel.Error, $"Could not delete spawned object with key: {key}");
                     continue;
                 }
 
                 bool deletionSucceded = DeleteGameObject(gameObjectToDelete);
                 if (!deletionSucceded)
                 {
+                    Logger.Log(LogSeverityLevel.Error, $"Could not delete spawned object with key: {key}");
                     continue;
                 }
             }
