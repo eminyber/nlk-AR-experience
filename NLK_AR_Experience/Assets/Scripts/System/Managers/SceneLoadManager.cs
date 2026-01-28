@@ -1,3 +1,5 @@
+using NLKARExperience.Core.EventBus;
+using NLKARExperience.Core.EventBus.EventData.System;
 using NLKARExperience.Core.Models;
 
 using UnityEngine;
@@ -33,7 +35,19 @@ namespace NLKARExperience.System.Managers
 
         public void LoadScene(AppScene newScene)
         {
+            //Simple for now, Should probably add confirmation etc
+            if (newScene == AppScene.MainMenu)
+            {
+                ResetCurrentScene();
+            }
+
             SceneManager.LoadScene((int) newScene);
+        }
+
+        private void ResetCurrentScene()
+        {
+            EventBus.Publish<ResetCurrentSceneRequestedEventData>(new ResetCurrentSceneRequestedEventData());
+            EventBus.Publish<TurnOffARInSceneRequestedEventData>(new TurnOffARInSceneRequestedEventData());
         }
 
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
