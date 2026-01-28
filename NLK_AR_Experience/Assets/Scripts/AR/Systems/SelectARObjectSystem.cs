@@ -12,6 +12,11 @@ namespace NLKARExperience.AR.Systems
     {
         private ISelectionManager<Transform> _selectionManager = new SingleARObjectSelectionManager();
 
+        public bool HasSelected()
+        {
+            return _selectionManager.CurrentSelected != null;
+        }
+
         public void ClearSelected()
         {
             _selectionManager.RemoveSelected();

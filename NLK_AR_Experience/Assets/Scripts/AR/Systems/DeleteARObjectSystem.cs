@@ -31,7 +31,7 @@ namespace NLKARExperience.AR.Systems
                 enabled = false;
             }
         }
-        public void DeleteSelectedObjects()
+        public void DeleteSelectedObject()
         {
             if (!enabled) return;
 
@@ -60,7 +60,26 @@ namespace NLKARExperience.AR.Systems
 
         public void DeleteAllObjects()
         {
-            throw new global::System.NotImplementedException();
+            if (_selectionSystem.HasSelected())
+            {
+                DeleteSelectedObject();
+            }
+
+            var keys = _spawnedObjectsManager.GetKeys();
+            foreach(var key in keys)
+            {
+                var (removalSucceeded, gameObjectToDelete) = RetrieveGameObjectToDelete(key);
+                if (!removalSucceeded)
+                {
+                    continue;
+                }
+
+                bool deletionSucceded = DeleteGameObject(gameObjectToDelete);
+                if (!deletionSucceded)
+                {
+                    continue;
+                }
+            }
         }
 
         private bool DeleteGameObject(GameObject objectToDelete)

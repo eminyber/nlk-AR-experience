@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface IDeletionSystem
 {
-    public void DeleteSelectedObjects();
+    public void DeleteSelectedObject();
     public void DeleteAllObjects();
 }
